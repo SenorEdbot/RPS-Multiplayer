@@ -6,10 +6,38 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="assets/css/style.css">
     <script src="https://www.gstatic.com/firebasejs/5.5.0/firebase.js"></script>
-    <title>Document</title>
+    <title>Rock Paper Scissors MultiPlayer</title>
 </head>
 <body>
+    <div class="container">
+        <div class="row" id="titleRow">
+            <h1>Rock Paper Scissors!</h1>
+        </div><!--End of Title Row-->
+        <div class="row" id="connectRow">
+            <div id="connectDiv"><button id="connectButton">Connect</button></div>
+        </div><!--End of Connect Row-->
+        <div class="row">
+            <div class="col">
+                <ul id="userGuesses">
+                    <li id="rock">Rock</li>
+                    <li id="paper">Paper</li>
+                    <li id="scissors">Scissors</li>
+                </ul>
+            </div><!--End of User Guess Col-->
+            <div class="col">
+
+            </div><!--End of Display Text Col-->
+        </div><!--End of Game Row-->
+        <div class="row">
+            <p>Wins: <span id="userW"></span> | Losses: <span id="userL"></span></p>
+        </div><!--End of Score Row-->
+        <div class="row" id="chatRow">
+            <h3>Chat</h3>
+
+        </div><!--End of Chat Row-->
+    </div>
     
 </body>
 </html>
