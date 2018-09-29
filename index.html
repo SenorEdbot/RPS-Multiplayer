@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="assets/css/style.css">
     <script src="https://www.gstatic.com/firebasejs/5.5.0/firebase.js"></script>
+    <script src="assets/javascript/app.js"></script>
     <title>Rock Paper Scissors MultiPlayer</title>
 </head>
 <body>
@@ -20,19 +21,22 @@
         </div><!--End of Connect Row-->
         <div class="row">
             <div class="col">
-                <ul id="userGuesses">
+                <ul id="user1Guesses">
                     <li id="rock">Rock</li>
                     <li id="paper">Paper</li>
                     <li id="scissors">Scissors</li>
                 </ul>
-            </div><!--End of User Guess Col-->
+                <p>Wins: <span id="user1W"></span> | Losses: <span id="user1L"></span></p>
+            </div><!--End of User 1 Guess Col-->
             <div class="col">
-
-            </div><!--End of Display Text Col-->
+                <ul id="user2Guesses">
+                    <li id="rock">Rock</li>
+                    <li id="paper">Paper</li>
+                    <li id="scissors">Scissors</li>
+                </ul>
+                <p>Wins: <span id="user2W"></span> | Losses: <span id="user2L"></span></p>
+            </div><!--End of User 2 Guess Col-->            
         </div><!--End of Game Row-->
-        <div class="row">
-            <p>Wins: <span id="userW"></span> | Losses: <span id="userL"></span></p>
-        </div><!--End of Score Row-->
         <div class="row" id="chatRow">
             <h3>Chat</h3>
 
