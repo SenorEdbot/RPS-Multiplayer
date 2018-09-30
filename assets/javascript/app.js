@@ -58,7 +58,7 @@ connectionsRef.on("value", function (snap) {
 
     // Display the viewer count in the html.
     // The number of online users is the number of children in the connections list.
-    if (snap.numChildren() == 1) {
+    if (snap.numChildren() === 1) {
         console.log("only 1 person connected")
         user1_id = 1;     
         user1Ref.set({
@@ -67,7 +67,7 @@ connectionsRef.on("value", function (snap) {
             losses: 0
         })
         //Code for when there is only 1 user connected
-    } else if (snap.numChildren() == 2) {
+    } else if (snap.numChildren() === 2) {
         console.log("only 2 people connected")
         user2_id = 2;
         user2Ref.set({
@@ -89,16 +89,7 @@ $(document).on('click', '.user1Guess', function(e){
         user1_guess = 'r'
         if ((user1_guess) && (user2_guess)) {
             gameLogic(user1_guess, user2_guess)
-            user1Ref.set({
-                guess: user1_guess,
-                wins: user1_wins,
-                losses: user1_losses
-            })
-            user2Ref.set({
-                guess: user2_guess,
-                wins: user2_wins,
-                losses: user2_losses
-            })
+            databaseSet();
             gameReset();
         }
 
@@ -106,32 +97,14 @@ $(document).on('click', '.user1Guess', function(e){
         user1_guess = 'p'
         if ((user1_guess) && (user2_guess)) {
             gameLogic(user1_guess, user2_guess)
-            user1Ref.set({
-                guess: user1_guess,
-                wins: user1_wins,
-                losses: user1_losses
-            })
-            user2Ref.set({
-                guess: user2_guess,
-                wins: user2_wins,
-                losses: user2_losses
-            })
+            databaseSet();
             gameReset();
         }
     } else if ($(this).text() === 'Scissors') {
         user1_guess = 's'
         if ((user1_guess) && (user2_guess)) {
             gameLogic(user1_guess, user2_guess)
-            user1Ref.set({
-                guess: user1_guess,
-                wins: user1_wins,
-                losses: user1_losses
-            })
-            user2Ref.set({
-                guess: user2_guess,
-                wins: user2_wins,
-                losses: user2_losses
-            })
+            databaseSet();
             gameReset();
         }
     }
@@ -142,48 +115,21 @@ $(document).on('click', '.user2Guess', function(e){
         user2_guess = 'r'
         if ((user1_guess) && (user2_guess)) {
             gameLogic(user1_guess, user2_guess)
-            user2Ref.set({
-                guess: user2_guess,
-                wins: user2_wins,
-                losses: user2_losses
-            })
-            user1Ref.set({
-                guess: user1_guess,
-                wins: user1_wins,
-                losses: user1_losses
-            })
+            databaseSet();
             gameReset();
         }
     } else if ($(this).text() === 'Paper') {
         user2_guess = 'p'
         if ((user1_guess) && (user2_guess)) {
             gameLogic(user1_guess, user2_guess)
-            user2Ref.set({
-                guess: user2_guess,
-                wins: user2_wins,
-                losses: user2_losses
-            })
-            user1Ref.set({
-                guess: user1_guess,
-                wins: user1_wins,
-                losses: user1_losses
-            })
+            databaseSet();
             gameReset();
         }
     } else if ($(this).text() === 'Scissors') {
         user2_guess = 's'
         if ((user1_guess) && (user2_guess)) {
             gameLogic(user1_guess, user2_guess)
-            user2Ref.set({
-                guess: user2_guess,
-                wins: user2_wins,
-                losses: user2_losses
-            })
-            user1Ref.set({
-                guess: user1_guess,
-                wins: user1_wins,
-                losses: user1_losses
-            })
+            databaseSet();
             gameReset();
         }
     }
@@ -209,6 +155,18 @@ var gameLogic = function (x, y) {
         user1_losses++;
         user2_wins++;
     }
+}
+var databaseSet = function() {
+    user1Ref.set({
+        guess: user1_guess,
+        wins: user1_wins,
+        losses: user1_losses
+    })
+    user2Ref.set({
+        guess: user2_guess,
+        wins: user2_wins,
+        losses: user2_losses
+    })
 }
 var gameReset = function () {
     user1_guess = '';
