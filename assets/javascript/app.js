@@ -86,7 +86,7 @@ connectionsRef.on("value", function (snap) {
 console.log(user1_id, user2_id)
 console.log(users);
 $(document).on('click', '.user1Guess', function(e){
-    
+    /*This is where the logic to determine if the current user was = to the database user1- if TRUE then that user will be able to edit the user1Guess list items. */
     if ($(this).text() === 'Rock') {
         user1_guess = 'r'
         if ((user1_guess) && (user2_guess)) {
@@ -112,7 +112,7 @@ $(document).on('click', '.user1Guess', function(e){
     }
 })
 $(document).on('click', '.user2Guess', function(e){
-    
+    /*This is where the logic to determine if the current user was = to the database user2- if TRUE then that user will be able to edit the user2Guess list items. */
     if ($(this).text() === 'Rock') {
         user2_guess = 'r'
         if ((user1_guess) && (user2_guess)) {
