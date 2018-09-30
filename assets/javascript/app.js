@@ -17,20 +17,10 @@ firebase.auth().signInAnonymously().catch(function(error) {
     var errorMessage = error.message;
     // 
   });
-firebase.auth().onAuthStateChanged(function(user) {
-if (user) {
-    // User is signed in.
-    var isAnonymous = user.isAnonymous;
-    var uid = user.uid;
-    console.log(user)
-    return uid;
-    // ...
-} else {
-    // User is signed out.
-    // ...
-}
-// ...
-});
+$('#connectButton').on('click', function(){
+    var currentUser = firebase.auth().getCurrentUser();
+    console.log(currentUser);
+})
 var connectionsRef = database.ref("/connections");
 var connectedRef = database.ref(".info/connected");
 var userDataRef = database.ref("/userData");
@@ -41,40 +31,50 @@ var user1_wins = 0
 var user1_losses = 0;
 var user2_wins = 0;
 var user2_losses = 0;
-var user1_guess, user2_guess, user1_id, user2_id;
-
+var user1_guess = ''; 
+var user2_guess = '';
+var user1_id, user2_id;
+var users = [];
+console.log(firebase.auth())
 // When the client's connection state changes and on initial load
 connectedRef.on("value", function (snap) {
 
     // If they are connected..
     if (snap.val()) {
         var con = connectionsRef.push(true);
+        users.push(con.key);
+        console.log(users);
+        user1_id = con.key; 
+        con.set({
+            userid: con.key
+        })
+        database.ref("/Latestuser").set({
+            latestUser: con.key
+        })
         // Remove user from the connection list when they disconnect.
         con.onDisconnect().remove();
     }
 });
-
+console.log(connectionsRef);
 connectionsRef.on("value", function (snap) {
 
     // Display the viewer count in the html.
     // The number of online users is the number of children in the connections list.
     if (snap.numChildren() === 1) {
         console.log("only 1 person connected")
-        user1_id = 1;     
-        user1Ref.set({
-            guess: null,
-            wins: 0,
-            losses: 0
-        })
         //Code for when there is only 1 user connected
     } else if (snap.numChildren() === 2) {
-        console.log("only 2 people connected")
-        user2_id = 2;
-        user2Ref.set({
-            guess: null,
-            wins: 0,
-            losses: 0
+        console.log("only 2 people connected")  
+        var connections = snap.val();
+        var keys = Object.keys(connections);
+        user1_id = keys[0];
+        user2_id = keys[1];
+        database.ref("/users").set({
+            user1: user1_id,
+            user2: user2_id
         })
+        console.log(user1_id, user2_id)
+        databaseSet();
         //Code for when there are 2 users connected (THE GAME SHOULD RUN)
     } else if (snap.numChildren() > 2) {
         console.log("more than 2 people connected")
@@ -83,8 +83,10 @@ connectionsRef.on("value", function (snap) {
         return false;
     }
 });
-console.log(connectionsRef);
+console.log(user1_id, user2_id)
+console.log(users);
 $(document).on('click', '.user1Guess', function(e){
+    
     if ($(this).text() === 'Rock') {
         user1_guess = 'r'
         if ((user1_guess) && (user2_guess)) {
@@ -179,6 +181,25 @@ database.ref("/userData").on("value", function (snapshot) {
         $('#user2W').text(snapshot.val().user_2.wins);
         $('#user2L').text(snapshot.val().user_2.losses);
     }
+})
+database.ref("/users").on("value", function(snap){
+    if (snap.child("user1").exists() && snap.child("user2").exists())
+    console.log(snap.val())
+    console.log(snap.val().length)
+    user1_id = snap.val().user1;
+    $('#rock1').attr('user',user1_id);
+    $('#paper1').attr('user',user1_id);
+    $('#scissors1').attr('user',user1_id);
+    user2_id = snap.val().user2;
+    $('#rock2').attr('user',user2_id);
+    $('#paper2').attr('user',user2_id);
+    $('#scissors2').attr('user',user2_id);
+    // var theusers = snapshot.val();
+    // var userkeys = Object.keys(theusers);
+    // for (var i=0; i< userkeys.length; i++){
+    //     var k = userkeys[i];
+    //     usersArr.push(k);
+    // }
 })
 //When a user clicks Rock Paper or Scissors add that value to the currentRPSGame array
 //currentRPSGame should only fire when there are 2 values in the array. It should also clear after every game
