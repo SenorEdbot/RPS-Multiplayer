@@ -42,8 +42,6 @@ connectedRef.on("value", function (snap) {
     // If they are connected..
     if (snap.val()) {
         var con = connectionsRef.push(true);
-        users.push(con.key);
-        console.log(users);
         user1_id = con.key; 
         con.set({
             userid: con.key
@@ -85,58 +83,92 @@ connectionsRef.on("value", function (snap) {
 });
 console.log(user1_id, user2_id)
 console.log(users);
-$(document).on('click', '.user1Guess', function(e){
+$(document).on('click', '.userGuesses', function(e){
+    event.preventDefault();
     /*This is where the logic to determine if the current user was = to the database user1- if TRUE then that user will be able to edit the user1Guess list items. */
-    if ($(this).text() === 'Rock') {
-        user1_guess = 'r'
-        if ((user1_guess) && (user2_guess)) {
-            gameLogic(user1_guess, user2_guess)
-            databaseSet();
-            gameReset();
+    console.log(users[0])
+    console.log(users[1])
+    console.log($(this).attr('user'));
+    if( $(this).attr('user') === users[0]) {
+        console.log('successful user1 click')
+        if ($(this).text() === 'Rock') {
+            user1_guess = 'r'
+            if ((user1_guess) && (user2_guess)) {
+                gameLogic(user1_guess, user2_guess)
+                databaseSet();
+                gameReset();
+            }
+    
+        } else if ($(this).text() === 'Paper') {
+            user1_guess = 'p'
+            if ((user1_guess) && (user2_guess)) {
+                gameLogic(user1_guess, user2_guess)
+                databaseSet();
+                gameReset();
+            }
+        } else if ($(this).text() === 'Scissors') {
+            user1_guess = 's'
+            if ((user1_guess) && (user2_guess)) {
+                gameLogic(user1_guess, user2_guess)
+                databaseSet();
+                gameReset();
+            }
         }
-
-    } else if ($(this).text() === 'Paper') {
-        user1_guess = 'p'
-        if ((user1_guess) && (user2_guess)) {
-            gameLogic(user1_guess, user2_guess)
-            databaseSet();
-            gameReset();
-        }
-    } else if ($(this).text() === 'Scissors') {
-        user1_guess = 's'
-        if ((user1_guess) && (user2_guess)) {
-            gameLogic(user1_guess, user2_guess)
-            databaseSet();
-            gameReset();
+    } else if ( $(this).attr('user') === users[1]) {
+        console.log('successful user2 click')
+        if ($(this).text() === 'Rock') {
+            user2_guess = 'r'
+            if ((user1_guess) && (user2_guess)) {
+                gameLogic(user1_guess, user2_guess)
+                databaseSet();
+                gameReset();
+            }
+        } else if ($(this).text() === 'Paper') {
+            user2_guess = 'p'
+            if ((user1_guess) && (user2_guess)) {
+                gameLogic(user1_guess, user2_guess)
+                databaseSet();
+                gameReset();
+            }
+        } else if ($(this).text() === 'Scissors') {
+            user2_guess = 's'
+            if ((user1_guess) && (user2_guess)) {
+                gameLogic(user1_guess, user2_guess)
+                databaseSet();
+                gameReset();
+            }
         }
     }
 })
-$(document).on('click', '.user2Guess', function(e){
-    /*This is where the logic to determine if the current user was = to the database user2- if TRUE then that user will be able to edit the user2Guess list items. */
-    if ($(this).text() === 'Rock') {
-        user2_guess = 'r'
-        if ((user1_guess) && (user2_guess)) {
-            gameLogic(user1_guess, user2_guess)
-            databaseSet();
-            gameReset();
-        }
-    } else if ($(this).text() === 'Paper') {
-        user2_guess = 'p'
-        if ((user1_guess) && (user2_guess)) {
-            gameLogic(user1_guess, user2_guess)
-            databaseSet();
-            gameReset();
-        }
-    } else if ($(this).text() === 'Scissors') {
-        user2_guess = 's'
-        if ((user1_guess) && (user2_guess)) {
-            gameLogic(user1_guess, user2_guess)
-            databaseSet();
-            gameReset();
-        }
-    }
-})
-
+// $(document).on('click', '.user2Guess', function(e){
+//     /*This is where the logic to determine if the current user was = to the database user2- if TRUE then that user will be able to edit the user2Guess list items. */
+//     if ( $(this).attr('user') === user2_id) {
+//         console.log('successful user1 click')
+//         if ($(this).text() === 'Rock') {
+//             user2_guess = 'r'
+//             if ((user1_guess) && (user2_guess)) {
+//                 gameLogic(user1_guess, user2_guess)
+//                 databaseSet();
+//                 gameReset();
+//             }
+//         } else if ($(this).text() === 'Paper') {
+//             user2_guess = 'p'
+//             if ((user1_guess) && (user2_guess)) {
+//                 gameLogic(user1_guess, user2_guess)
+//                 databaseSet();
+//                 gameReset();
+//             }
+//         } else if ($(this).text() === 'Scissors') {
+//             user2_guess = 's'
+//             if ((user1_guess) && (user2_guess)) {
+//                 gameLogic(user1_guess, user2_guess)
+//                 databaseSet();
+//                 gameReset();
+//             }
+//         }
+//     }
+// })
+//eddie this is where you want to stop ctrl + z if things break.
 var gameLogic = function (x, y) {
     if ((x === "r") && (y === "s")) {
         user1_wins++;
@@ -194,12 +226,15 @@ database.ref("/users").on("value", function(snap){
     $('#rock2').attr('user',user2_id);
     $('#paper2').attr('user',user2_id);
     $('#scissors2').attr('user',user2_id);
+    users = [];
+    users.push(user1_id, user2_id);
     // var theusers = snapshot.val();
     // var userkeys = Object.keys(theusers);
     // for (var i=0; i< userkeys.length; i++){
     //     var k = userkeys[i];
     //     usersArr.push(k);
     // }
+    
 })
 //When a user clicks Rock Paper or Scissors add that value to the currentRPSGame array
 //currentRPSGame should only fire when there are 2 values in the array. It should also clear after every game
